@@ -20,7 +20,7 @@ transform = transforms.Compose([
 ])
 
 model_list = ['resnet18', 'resnet50', 'densenet121']
-augment_list = ['ours', 'random_erasing', 'auto_augment']
+augment_list = ['ours']
 
 def evaluate(device, model, dataloader) :
     print('\n======= Testing... =======\n')
