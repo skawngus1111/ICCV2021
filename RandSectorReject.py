@@ -18,7 +18,6 @@ class RandSectorReject() :
 
         self.angle = 0
         self.radius = 0
-        self.count = 5
 
     def __call__(self, img):
         reject_img = self.reject_frequency(img)
@@ -91,30 +90,3 @@ class RandSectorReject() :
         reject_img_3c[:, :, 2] = img_back
 
         return reject_img_3c
-
-def plot_example(data, save_name, count) :
-    if 'spectrum' in save_name :
-        height, width = data.shape
-        figsize = (1, height / width) if height >= width else (width / height, 1)
-        plt.figure(figsize=figsize)
-
-        plt.imshow(data, cmap='gray')
-    else :
-        height, width, _ = data.shape
-        figsize = (1, height / width) if height >= width else (width / height, 1)
-        plt.figure(figsize=figsize)
-
-        plt.imshow(data)
-
-    plt.xticks([]); plt.yticks([])
-    plt.axis('off')
-    plt.tight_layout()
-    plt.subplots_adjust(left = 0, bottom = 0, right = 1, top = 1, hspace = 0, wspace = 0)
-
-    try :
-        plt.savefig('{}{}.png'.format(save_name, count), dpi=300)
-    except FileNotFoundError :
-        import os
-        os.makedirs(save_name)
-        plt.savefig('{}{}.png'.format(save_name, count), dpi=300)
-    plt.close()
