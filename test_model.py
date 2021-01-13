@@ -3,7 +3,6 @@ from torchvision import transforms
 from torch.utils.data import DataLoader
 
 from Dataset import CustomDataset
-from Classifier import Classifier
 
 import os
 import numpy as np
@@ -20,7 +19,7 @@ transform = transforms.Compose([
 ])
 
 model_list = ['resnet18', 'resnet50', 'densenet121']
-augment_list = ['ours']
+augment_list = ['ours', 'random_erasing', 'auto_augment']
 
 def evaluate(device, model, dataloader) :
     print('\n======= Testing... =======\n')
@@ -77,21 +76,7 @@ def main(device) :
                 print("Fold = {}".format(fold))
                 model_path = os.path.join('./model_save', augment, model_name, '0.01_030(030)(fold={}).pth'.format(fold))
                 check_point = torch.load(model_path)
-                del check_point['optimizer']
-                del check_point['model_name']
-                del check_point['learning_rate']
-                del check_point['epochs']
-                del check_point['losses_dict']
-                del check_point['acc_dict']
-                # try :
-                #     torch.save(check_point, os.path.join('model_save5/', augment, model_name,
-                #                                          '0.01_030(030)(fold={}).pth'.format(fold)))
-                # except FileNotFoundError :
-                #     os.makedirs(os.path.join('model_save5/', augment, model_name))
-                #     torch.save(check_point, os.path.join('model_save5/', augment, model_name,
-                #                                          '0.01_030(030)(fold={}).pth'.format(fold)))
                 model = check_point['model']
-                # model = Classifier(model_name=model_name, num_of_classes=4)
                 model.load_state_dict(check_point['model_state_dict'])
                 accuracy, precision, recall, f1_score, auc = evaluate(device, model, dataloader)
 
